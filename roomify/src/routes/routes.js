@@ -1,0 +1,26 @@
+export default routerRoutes = {
+    home:{
+        url:"/",
+    },
+    rooms:{
+        url:"/category/rooms",
+    },
+    cabins:{
+        url:"/category/cabins",
+    },
+    buildings:{
+        url:"/category/buildings",
+    },
+    flats:{
+        url:"/category/flats"
+    },
+    roomDetail:{
+        url:"/room"
+    },
+    login:{
+        url:"/login",
+    },
+    signup:{
+        url:"/signup"
+    },
+}
