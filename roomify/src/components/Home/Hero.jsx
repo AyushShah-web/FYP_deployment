@@ -35,7 +35,7 @@ export default function Hero({ locations }) {
   };
 
   return (
-    <section className="relative min-h-[600px] flex items-center justify-center">
+    <section className="relative min-h-[600px] h-[89vh] flex items-center justify-center">
       <div
         className="absolute inset-0 z-0"
         style={{
@@ -133,7 +133,6 @@ export default function Hero({ locations }) {
           ))}
         </div>
       </div>
-      <ToastContainer />
     </section>
   );
 }

@@ -3,8 +3,8 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { User } from "./models/userModel.js";
 import { generateToken } from "./controllers/userControllers.js";
-
 const app = express();
+
 
 app.use(
   cors({
@@ -138,7 +138,7 @@ import otpRouter from "./routes/otpRoutes.js";
 import experinceRouter from "./routes/experienceRoutes.js";
 import paymentRouter from "./routes/paymentRoutes.js";
 import messageRouter from "./routes/messageRoutes.js";
-import { Socket } from "socket.io-client";
+import adminRouter from "./routes/adminRoutes.js";
 
 // router declaration
 app.use("/api/users", userRouter);
@@ -148,5 +148,6 @@ app.use("/api/otp", otpRouter);
 app.use("/api/experience", experinceRouter);
 app.use("/api/payments", paymentRouter);
 app.use("/api/messages", messageRouter);
+app.use("/api/admin", adminRouter);
 
 export { app };

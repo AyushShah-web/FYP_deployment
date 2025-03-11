@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { Link, useLocation } from "react-router-dom";
-import SummaryApi from "../../api/api";
+import SummaryApi from "../../../api/api";
 import axios from "axios";
-import { ToastContainer } from "react-toastify";
-import showToast from "../ShowToast";
+import showToast from "../../ShowToast";
 
-const UserRooms = () => {
+const LandlordRooms = () => {
   const location = useLocation();
   const [rooms, setRooms] = useState([]);
 
@@ -81,7 +80,6 @@ const UserRooms = () => {
           <p>No rooms found.</p>
         )}
       </div>
-      <ToastContainer />
       <Link
           to={"/dashboard/roomForm"}
           className="bg-[#0f5da7] text-white flex justify-center md:hidden p-2 px-4 rounded-md absolute bottom-0 items-center hover:bg-slate-300 hover:text-black right-[50%]"
@@ -95,4 +93,4 @@ const UserRooms = () => {
   );
 };
 
-export default UserRooms;
+export default LandlordRooms;

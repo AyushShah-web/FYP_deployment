@@ -99,7 +99,6 @@ const RentRoom = () => {
         </div>
       </div>
 
-      <ToastContainer />
     </section>
   );
 };

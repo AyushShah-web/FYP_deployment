@@ -14,6 +14,7 @@ import axios from "axios";
 import SummaryApi from "./api/api";
 
 import {  Footer, NabBar } from "./components/index";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -49,6 +50,7 @@ function App() {
       <NabBar />
       <Outlet />
       <Footer />
+    <ToastContainer/>
     </>
   );
 }

@@ -3,6 +3,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 import mongoose from "mongoose";
+import sendEmail from "../utils/sendEmail.js";
 
 const registerNegotiation = asyncHandler(async (req, res) => {
   // Register the negotiation made by the user
@@ -20,9 +21,19 @@ const registerNegotiation = asyncHandler(async (req, res) => {
     price,
   });
 
+  const negotiaionDetails = await Negotiation.findById(
+    negotiation._id
+  ).populate("owner", "email");
+
   if (!negotiation) {
     throw new ApiError(400, "Error occured while registering negotiation.");
   }
+
+  sendEmail({
+    email: negotiaionDetails?.owner?.email,
+    subject: "Roomify, Negotiations ",
+    message: `Your room have been negotiated for Rs. ${price}`,
+  });
 
   return res
     .status(200)
@@ -37,10 +48,25 @@ const deleteNegotiation = asyncHandler(async (req, res) => {
   if (!negotiationId) {
     throw new ApiError(400, "Negotiation id is required");
   }
-  let negotiation = await Negotiation.deleteOne({ _id: negotiationId });
+
+  const negotiaionDetails = await Negotiation.findOne({
+    _id: negotiationId,
+  }).populate("client", "email");
+  let negotiation = await Negotiation.deleteOne({
+    _id: negotiationId,
+  }).populate("owner", "email");
   if (!negotiation) {
     throw new ApiError(400, "No negotiation found");
   }
+
+  console.log(negotiaionDetails?.client?.email);
+
+  sendEmail({
+    email: negotiaionDetails?.client?.email,
+    subject: "Roomify ",
+    message: `Your negotiation have been rejected`,
+  });
+
   return res
     .status(200)
     .json(400, negotiation, "Negotiation deleted suscessfully");
@@ -100,11 +126,17 @@ const acceptNegotiation = asyncHandler(async (req, res) => {
     {
       negotiationStatus: true,
     }
-  );
+  ).populate("client", "email");
 
   if (!negotiate) {
     throw new ApiError(400, "Invalid room Id");
   }
+
+  sendEmail({
+    email: negotiate?.client?.email,
+    subject: "Roomify ",
+    message: `Your negotiation have been accepted`,
+  });
 
   return res
     .status(200)
@@ -114,20 +146,24 @@ const acceptNegotiation = asyncHandler(async (req, res) => {
 const counterNegotiation = asyncHandler(async (req, res) => {
   console.log("Entered here");
 
-  const {negotiationId} = req.params; 
+  const { negotiationId } = req.params;
   const { counterPrice } = req.body;
   if (!(negotiationId && counterPrice)) {
     throw new ApiError(400, "Id and CounterPrice is required");
   }
-  const negotiation = await Negotiation.findByIdAndUpdate(
-    negotiationId,
-    {
-      counterPrice,
-    }
-  );
+  const negotiation = await Negotiation.findByIdAndUpdate(negotiationId, {
+    counterPrice,
+  }).populate("client", "email");
   if (!negotiation) {
     throw new ApiError(500, "Error occured while countering");
   }
+
+  sendEmail({
+    email: negotiation?.client?.email,
+    subject: "Roomify ",
+    message: `Your negotiation have been countered for Rs.${counterPrice}`,
+  });
+
   return res
     .status(200)
     .json(

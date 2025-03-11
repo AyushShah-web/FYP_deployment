@@ -4,10 +4,13 @@ import Signup from "./Authentication/Signup";
 import VerifyOtp from "./Authentication/VerifyOtp";
 
 // Dashboard
-import UserNegotiations from "./Dashboard/UserNegotiations";
-import UserProfile from "./Dashboard/UserProfile";
-import UserRooms from "./Dashboard/UserRooms";
-import UserRoomsList from "./Dashboard/UserRoomsList";
+import Profile from "./Dashboard/Profile";
+import Negotiations from "./Dashboard/Negotiations";
+import LandlordRoomsList from "./Dashboard/Lanlord/LandlordRoomsList";
+import LandlordRooms from "./Dashboard/Lanlord/LandlordRooms";
+import TenantsList from "./Dashboard/Admin/TenantsList";
+import LandlordsList from "./Dashboard/Admin/LandlordsList";
+import Messages from "./Dashboard/Messages";
 
 // Experience
 import ExperienceForm from "./Experiences/ExperienceForm";
@@ -37,10 +40,11 @@ export {
     Login,
     Signup,
     VerifyOtp,
-    UserNegotiations,
-    UserProfile,
-    UserRooms,
-    UserRoomsList,
+    Negotiations,
+    Profile,
+    LandlordRooms,
+    LandlordRoomsList,
+    Messages,
     ExperienceForm,
     RoomExperiences,
     Chooseus,
@@ -55,5 +59,7 @@ export {
     Footer,
     NabBar,
     showToast,
-    Protected
+    Protected,
+    LandlordsList,
+    TenantsList
 }

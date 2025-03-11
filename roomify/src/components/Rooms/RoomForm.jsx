@@ -18,6 +18,7 @@ const RoomForm = () => {
   const [location, setLocation] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState("");
+  const [imageUrl, setImageUrl] = useState("")
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [error, setError] = useState(false);
@@ -43,6 +44,7 @@ const RoomForm = () => {
           setLatitude(roomData.address.coordinates[1]);
           setLongitude(roomData.address.coordinates[0]);
         }
+        setImageUrl(roomData.image)
       }
     } catch (error) {
       console.log("Error fetching room:", error);
@@ -250,6 +252,7 @@ const RoomForm = () => {
             />
           </div>
         </div>
+          <img src={imageUrl} alt="" className="w-[80%] max-w-[30rem] rounded-xl" />
 
         {error && <p className="text-red-600 text-sm">{error}</p>}
 
@@ -261,7 +264,6 @@ const RoomForm = () => {
           {submitting ? "Submitting..." : slug ? "Update Room" : "Add Room"}
         </button>
       </form>
-      <ToastContainer />
     </div>
   );
 };

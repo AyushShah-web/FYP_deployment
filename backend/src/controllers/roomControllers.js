@@ -7,6 +7,8 @@ import {
   deleteFromCloudinary,
   uploadOnCloudinary,
 } from "../utils/cloudinary.js";
+import { Negotiation } from "../models/negotiationModel.js";
+import { Experience } from "../models/experienceModel.js";
 
 // Registering room
 const registerRoom = asyncHandler(async (req, res) => {
@@ -32,12 +34,11 @@ const registerRoom = asyncHandler(async (req, res) => {
   let imageLocalPath = req.file?.path;
 
   console.log(imageLocalPath);
-  
 
   const image = await uploadOnCloudinary(imageLocalPath, "rooms");
   if (!image) {
     console.log(400, "Error occured while uploading image");
-    throw new ApiError(400,"Something went wrong while uploading image")
+    throw new ApiError(400, "Something went wrong while uploading image");
   }
 
   const room = await Room.create({
@@ -130,6 +131,12 @@ const deleteRoom = asyncHandler(async (req, res) => {
     owner: req.user._id,
   });
 
+  if (!room) {
+    throw new ApiError(400, "Room not found");
+  }
+  await Negotiation.deleteMany({ room: roomId });
+  await Experience.deleteMany({ roomId });
+
   return res
     .status(200)
     .json(new ApiResponse(200, room, "Room deleted susscessfully"));
@@ -146,7 +153,6 @@ const updateRoom = asyncHandler(async (req, res) => {
   }
 
   const newImageLocalPath = req.file?.path;
-  
 
   if (newImageLocalPath) {
     let newImage = await uploadOnCloudinary(newImageLocalPath, "rooms");
@@ -271,7 +277,6 @@ const getRoomBasedOnCoordinates = asyncHandler(async (req, res) => {
   }
 
   console.log("Send response");
-  
 
   return res
     .status(200)

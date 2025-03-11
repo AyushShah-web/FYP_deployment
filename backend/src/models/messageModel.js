@@ -1,4 +1,4 @@
-import mongoose, { mongo, Schema } from "mongoose";
+import mongoose, {  Schema } from "mongoose";
 
 const messageSchema = new Schema(
   {
@@ -18,10 +18,20 @@ const messageSchema = new Schema(
       type: String,
       required: false,
     },
-    isRead: {
+    status: {
       type: String,
+      enum: ["sent", "delivered", "read"],
+      default: "sent",
+    },
+    isRead: {
+      type: Boolean,
+      default:false,
       required: false,
     },
+    messageId:{
+      type:String,
+      required:true,
+    }
   },
   {
     timestamps: true,

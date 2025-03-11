@@ -2,12 +2,11 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import SummaryApi from "../../api/api";
+import SummaryApi from "../../../api/api";
 import { Link } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import showToast from "../ShowToast";
+import showToast from "../../ShowToast";
 
-const UserRoomsList = () => {
+const LandlordRoomsList = () => {
   const [rooms, setRooms] = useState([]);
 
   const deleteRoom = async (id) => {
@@ -88,4 +87,4 @@ const UserRoomsList = () => {
   );
 };
 
-export default UserRoomsList;
+export default LandlordRoomsList;

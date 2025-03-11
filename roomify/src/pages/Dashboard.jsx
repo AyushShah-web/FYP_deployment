@@ -7,13 +7,17 @@ import SummaryApi from "../api/api";
 import { FiMenu, FiX } from "react-icons/fi";
 import { IoHome } from "react-icons/io5";
 import {
-  UserProfile,
-  UserRoomsList,
-  UserNegotiations,
-  UserRooms,
+  Profile,
   RoomForm,
+  Negotiations,
+  LandlordRooms,
+  LandlordRoomsList,
+  TenantsList,
+  LandlordsList,
+  Messages,
 } from "../components/index";
 import axios from "axios";
+import { ToastContainer } from "react-toastify";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -58,7 +62,7 @@ const Dashboard = () => {
     } catch (error) {
       console.error("Error", error);
     }
-    navigate("/");
+    window.location.href = "http://localhost:5173";
   };
 
   return loading ? (
@@ -89,6 +93,7 @@ const Dashboard = () => {
             Profile
           </NavLink>
 
+          {/* Landlord */}
           {userData.type === "landlord" && (
             <>
               <NavLink
@@ -117,18 +122,67 @@ const Dashboard = () => {
               </NavLink>
             </>
           )}
-          <NavLink
-            to={"/dashboard/userNegotiations"}
-            className={({ isActive }) =>
-              `p-3 rounded-md text-center transition ${
-                isActive
-                  ? "bg-blue-700 text-white"
-                  : "bg-[#0f5da7] text-white hover:bg-blue-700"
-              }`
-            }
-          >
-            Negotiations
-          </NavLink>
+
+          {/* Tenant */}
+          {(userData.type === "landlord" || userData.type === "tenant") && (
+            <>
+              <NavLink
+                to={"/dashboard/userNegotiations"}
+                className={({ isActive }) =>
+                  `p-3 rounded-md text-center transition ${
+                    isActive
+                      ? "bg-blue-700 text-white"
+                      : "bg-[#0f5da7] text-white hover:bg-blue-700"
+                  }`
+                }
+              >
+                Negotiations
+              </NavLink>
+              <NavLink
+                to={"/dashboard/messages"}
+                className={({ isActive }) =>
+                  `p-3 rounded-md text-center transition ${
+                    isActive
+                      ? "bg-blue-700 text-white"
+                      : "bg-[#0f5da7] text-white hover:bg-blue-700"
+                  }`
+                }
+              >
+                Messages
+              </NavLink>
+            </>
+          )}
+
+          {/* Admin */}
+          {userData.type === "admin" && (
+            <>
+              {" "}
+              <NavLink
+                to={"/dashboard/landlordsList"}
+                className={({ isActive }) =>
+                  `p-3 rounded-md text-center transition ${
+                    isActive
+                      ? "bg-blue-700 text-white"
+                      : "bg-[#0f5da7] text-white hover:bg-blue-700"
+                  }`
+                }
+              >
+                Landlords
+              </NavLink>
+              <NavLink
+                to={"/dashboard/tenantsList"}
+                className={({ isActive }) =>
+                  `p-3 rounded-md text-center transition ${
+                    isActive
+                      ? "bg-blue-700 text-white"
+                      : "bg-[#0f5da7] text-white hover:bg-blue-700"
+                  }`
+                }
+              >
+                Tenants
+              </NavLink>
+            </>
+          )}
         </div>
         <div className="absolute self-center bottom-3 w-[90%] flex flex-col">
           <Link
@@ -159,14 +213,25 @@ const Dashboard = () => {
         }`}
       >
         <Routes>
-          <Route path="/profile" element={<UserProfile />} />
-          <Route path="/userRooms" element={<UserRooms />} />
-          <Route path="/userRoomList" element={<UserRoomsList />} />
-          <Route path="/userNegotiations" element={<UserNegotiations />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/userRooms" element={<LandlordRooms />} />
+          <Route path="/userRoomList" element={<LandlordRoomsList />} />
+          <Route path="/userNegotiations" element={<Negotiations />} />
           <Route path="/roomForm" element={<RoomForm />} />
           <Route path="/roomForm/:slug" element={<RoomForm />} />
+          {userData.type != "admin" && (
+            <Route path="/messages" element={<Messages />} />
+          )}
+
+          {userData.type == "admin" && (
+            <>
+              <Route path="/tenantsList" element={<TenantsList />} />
+              <Route path="/landlordsList" element={<LandlordsList />} />
+            </>
+          )}
         </Routes>
       </div>
+      <ToastContainer />
     </div>
   );
 };

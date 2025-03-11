@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 import showToast from "../ShowToast";
 import SummaryApi from "../../api/api";
 import ChatPopup from "../Chat/ChatPopup";
+import LeafletMap from "../LeafletMap"
 
 const SingleRoom = () => {
   const userData = useSelector((state) => state.user.userData);
@@ -18,6 +19,8 @@ const SingleRoom = () => {
     async function getRoomData() {
       try {
         let room = await axios.get(`${SummaryApi.getRoomFromId.url}/${slug}`);
+        console.log(room);
+        
         setRoomData(room.data.data);
       } catch (error) {
         console.error("Room not found", error);
@@ -33,11 +36,21 @@ const SingleRoom = () => {
       showToast("error", "Cannot negotiate your own room");
       return;
     }
+    console.log(typeof roomData.price);
+    console.log(typeof negotiationValue);
+
+    console.log("room data limit", typeof (roomData.price * 0.8));
+    console.log("negotiationvalue", typeof negotiationValue);
+    console.log("room price", typeof roomData.price);
+    console.log(negotiationValue <= 0 ? true : false);
+
+    console.log(negotiationValue >= roomData.price ? true : false);
+    console.log(negotiationValue < roomData.price * 0.8 ? true : false);
 
     if (
       Number(negotiationValue) <= 0 ||
-      Number(negotiationValue) < roomData.price * 0.8 ||
-      Number(negotiationValue) >= Number(roomData.price)
+      Number(negotiationValue) >= Number(roomData.price) ||
+      Number(negotiationValue) <= roomData.price * 0.8
     ) {
       showToast(
         "error",
@@ -159,6 +172,7 @@ const SingleRoom = () => {
                   See Rating
                 </Link>
               </div>
+              <div className="map"></div>
             </div>
           </>
         ) : (
@@ -171,9 +185,11 @@ const SingleRoom = () => {
             </p>
           </div>
         )}
+      {roomData?.address?.coordinates && (
+        <LeafletMap coordinates={roomData?.address?.coordinates} />
+      )}
       </div>
-      <ToastContainer />
-      <ChatPopup />
+      <ChatPopup owner={roomData.owner} />
     </section>
   );
 };

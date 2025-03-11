@@ -9,15 +9,17 @@ import {
   Login,
   Signup,
   VerifyOtp,
-  UserNegotiations,
-  UserProfile,
-  UserRooms,
-  UserRoomsList,
   ExperienceForm,
   RoomExperiences,
   RoomForm,
   SingleRoom,
   Protected as AuthLayout,
+  Negotiations,
+  LandlordRooms,
+  LandlordRoomsList,
+  TenantsList,
+  LandlordsList,
+  Messages,
 } from "./components/index.js";
 
 import Rooms from "./pages/Rooms.jsx";
@@ -26,6 +28,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import Home from "./pages/Home.jsx";
 import AboutUs from "./pages/AboutUs.jsx";
 import RentRoom from "./components/Payments/RentRoom.jsx";
+import Profile from "./components/Dashboard/Profile.jsx";
 
 const router = createBrowserRouter([
   {
@@ -82,20 +85,20 @@ const router = createBrowserRouter([
         element: <RentRoom />,
       },
       {
-        path:"/payment/:slug",
-        element:<RentRoom/>
-      }
+        path: "/payment/:slug",
+        element: <RentRoom />,
+      },
     ],
   },
   {
-    path: "/dashboard",
+    path: "/dashboard/*",
     element: <Dashboard />,
     children: [
       {
         path: "profile",
         element: (
           <AuthLayout authentication={true}>
-            <UserProfile />
+            <Profile />
           </AuthLayout>
         ),
       },
@@ -103,7 +106,7 @@ const router = createBrowserRouter([
         path: "userRooms",
         element: (
           <AuthLayout authentication={true}>
-            <UserRooms />
+            <LandlordRooms />
           </AuthLayout>
         ),
       },
@@ -111,7 +114,7 @@ const router = createBrowserRouter([
         path: "userRoomList",
         element: (
           <AuthLayout authentication={true}>
-            <UserRoomsList />
+            <LandlordRoomsList />
           </AuthLayout>
         ),
       },
@@ -119,7 +122,7 @@ const router = createBrowserRouter([
         path: "userNegotiations",
         element: (
           <AuthLayout authentication={true}>
-            <UserNegotiations />
+            <Negotiations />
           </AuthLayout>
         ),
       },
@@ -139,6 +142,30 @@ const router = createBrowserRouter([
           </AuthLayout>
         ),
       },
+      {
+        path: "tenantsList",
+        element: (
+          <AuthLayout authentication={true}>
+            <TenantsList />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "landlordsList",
+        element: (
+          <AuthLayout authentication={true}>
+            <LandlordsList />
+          </AuthLayout>
+        ),
+      },
+      {
+        path:"messages",
+        element:(
+          <AuthLayout authentication={true}>
+            <Messages/>
+          </AuthLayout>
+        )
+      }
     ],
   },
 ]);

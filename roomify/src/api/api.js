@@ -29,6 +29,24 @@ const SummaryApi = {
     method: "get",
   },
 
+  // Admin Api
+  getAllLandlords: {
+    url: `${backendDomain}/api/admin/getAllLandlords`,
+    method: "get",
+  },
+  getAllTenants: {
+    url: `${backendDomain}/api/admin/getAllTenants`,
+    method: "get",
+  },
+  deleteUser: {
+    url: `${backendDomain}/api/admin/deleteUser`,
+    method: "delete",
+  },
+  getUserCounts: {
+    url: `${backendDomain}/api/admin/getUserCounts`,
+    method: "get",
+  },
+
   // Otp Api
   generateOtp: {
     url: `${backendDomain}/api/otp/generateOtp`,
@@ -132,8 +150,16 @@ const SummaryApi = {
 
   // Message Routes
   registerMessage: {
-    url: `${backendDomain}/api/messages/`,
+    url: `${backendDomain}/api/messages`,
     method: "post",
+  },
+  getAllMessages: {
+    url: `${backendDomain}/api/messages`,
+    method: "get",
+  },
+  getUniquePersons: {
+    url: `${backendDomain}/api/messages/getUniquePersons`,
+    method: "get",
   },
 };
 
