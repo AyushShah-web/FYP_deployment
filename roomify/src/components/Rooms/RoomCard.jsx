@@ -3,7 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const RoomCard = ({ property, index }) => {
-  return (
+  return property.status ? null : (
     <div>
       {" "}
       <div

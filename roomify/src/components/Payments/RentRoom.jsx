@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, redirect, useNavigate, useParams } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import showToast from "../ShowToast";
 import SummaryApi from "../../api/api";
@@ -11,6 +11,8 @@ const RentRoom = () => {
   const { slug } = useParams();
   const [roomData, setRoomData] = useState(null);
   const [roomPrice, setRoomPrice] = useState(0);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!slug) return;
@@ -42,6 +44,50 @@ const RentRoom = () => {
     fetchRoomDetails();
   }, [slug]);
 
+  useEffect(() => {
+    const search = window.location.search;
+    const params = new URLSearchParams(search);
+    const foo = params.get("pay");
+
+    if (foo == "success") {
+      showToast("success", "Successfully rented room");
+    }
+  }, []);
+
+  const initializeKhalti = async () => {
+
+    if(roomData.status){
+      showToast("error","It is already rented")
+      return 
+    }
+    const options = {
+      roomId: slug,
+      priceAfterDiscount: roomPrice,
+      roomPrice: roomData.price,
+      websiteUrl: import.meta.env.VITE_FRONTEND_DOMAIN,
+    };
+    try {
+      const response = await axios.post(
+        SummaryApi.initializeKhalti.url,
+        options,
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log(response);
+
+      if (response.status != 200) {
+        console.log("Something went wrong");
+        showToast("error", "Somthing went wrong");
+        return;
+      }
+      window.location.href = response?.data?.data?.payment?.payment_url;
+    } catch (error) {
+      showToast("error", "Something went wrong");
+    }
+  };
+
   if (!roomData) {
     return (
       <h1 className="text-center text-white text-2xl mt-12">Room not found</h1>
@@ -51,6 +97,7 @@ const RentRoom = () => {
   return (
     <section className="container mx-auto px-4 py-12 flex flex-col items-center">
       <div className="bg-white text-black p-6 lg:p-16 rounded-lg shadow-lg">
+        <button className="p-1 bg-green-500 rounded-xl px-3" onClick={()=>navigate(`/room/${slug}`)}>Back</button>
         <h1 className="text-3xl font-bold mb-4 capitalize">{roomData.name}</h1>
         <img
           className="w-full md:w-[400px] h-[250px] object-cover rounded-lg shadow-xl mb-4"
@@ -62,6 +109,9 @@ const RentRoom = () => {
         </p>
         <p className="text-lg mb-2 capitalize">
           <strong>Type:</strong> {roomData.type}
+        </p>
+        <p className="text-lg mb-2 capitalize">
+          <strong>Status:</strong> {roomData.status?"Rented":"Open"}
         </p>
         <p className="text-lg mb-2 capitalize">
           <strong>Owner:</strong> {roomData.owner?.name || "Unknown"}
@@ -81,14 +131,16 @@ const RentRoom = () => {
               src={esewaImg}
               alt="Esewa"
             />
-            <img
-              className="w-[10rem] rounded-xl p-2 border-2 cursor-pointer hover:shadow-md"
-              src={khaltiImg}
-              alt="Khalti"
-            />
+            <button onClick={initializeKhalti}>
+              <img
+                className="w-[10rem] rounded-xl p-2 border-2 cursor-pointer hover:shadow-md"
+                src={khaltiImg}
+                alt="Khalti"
+              />
+            </button>
           </div>
         </div>
-
+        {/* 
         <div className="mt-6 flex flex-col items-center gap-4">
           <Link
             to={`/payment/${roomData._id}`}
@@ -96,9 +148,8 @@ const RentRoom = () => {
           >
             Rent It
           </Link>
-        </div>
+        </div> */}
       </div>
-
     </section>
   );
 };

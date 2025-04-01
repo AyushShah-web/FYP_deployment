@@ -97,6 +97,10 @@ const SummaryApi = {
     url: `${backendDomain}/api/rooms/getRoomBasedOnCoordinates`,
     method: "get",
   },
+  getRentedRoomsOfUsers: {
+    url: `${backendDomain}/api/rooms/getRentedRoomsOfUsers`,
+    method: "get",
+  },
 
   // Negotiation Api
   registerNegotiation: {
@@ -148,6 +152,16 @@ const SummaryApi = {
     method: "post",
   },
 
+  // Khalti Routes
+  initializeKhalti: {
+    url: `${backendDomain}/api/khalti/initialize-khalti`,
+    method: "post",
+  },
+  verifyCompleteKhaltiPayment: {
+    url: `${backendDomain}/api/khalti/complete-khalti-payment`,
+    method: "get",
+  },
+
   // Message Routes
   registerMessage: {
     url: `${backendDomain}/api/messages`,
@@ -160,6 +174,10 @@ const SummaryApi = {
   getUniquePersons: {
     url: `${backendDomain}/api/messages/getUniquePersons`,
     method: "get",
+  },
+  uploadChatImage: {
+    url: `${backendDomain}/api/messages/uploadImage`,
+    method: "post",
   },
 };
 

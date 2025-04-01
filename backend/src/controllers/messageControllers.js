@@ -3,6 +3,7 @@ import { Message } from "../models/messageModel.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 // Normal function
 const registerMessage = asyncHandler(async (req, res) => {
@@ -33,7 +34,7 @@ const registerMessage = asyncHandler(async (req, res) => {
 const getChatMessages = asyncHandler(async (req, res) => {
   // Get the message between user
   const { sender, receiver } = req.query;
-  console.log("36",sender, receiver);
+  console.log("36", sender, receiver);
 
   const userId = req.user._id;
 
@@ -41,9 +42,9 @@ const getChatMessages = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Both the fields are required");
   }
 
-  const messageId = [sender,receiver].sort().join("")
+  const messageId = [sender, receiver].sort().join("");
 
-  const messages = await Message.find({messageId}).sort({ createdAt: 1 });
+  const messages = await Message.find({ messageId }).sort({ createdAt: 1 });
 
   if (!messages) {
     throw new ApiError(400, "No any messages found");
@@ -54,9 +55,14 @@ const getChatMessages = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, messages, "Suscessfully fetched message"));
 });
 
-const saveMessageFromSockets = async ({ sender, receiver, message }) => {
+const saveMessageFromSockets = async ({
+  sender,
+  receiver,
+  message,
+  imageUrl,
+}) => {
   try {
-    if (!sender || !receiver || !message) {
+    if (!sender || !receiver ) {
       throw new ApiError(400, "All fields are reqeuired");
     }
 
@@ -64,9 +70,10 @@ const saveMessageFromSockets = async ({ sender, receiver, message }) => {
       sender,
       receiver,
       message,
-      messageId:[sender,receiver].sort().join("")
-    })
-    
+      image: imageUrl,
+      messageId: [sender, receiver].sort().join(""),
+    });
+
     if (!messageDb) {
       throw new ApiError(400, "Something went wrong");
     }
@@ -75,7 +82,7 @@ const saveMessageFromSockets = async ({ sender, receiver, message }) => {
   } catch (error) {
     throw new ApiError(
       400,
-      "Something went wrong while registering messages from sockets."
+      `Something went wrong while registering messages from sockets. ${error}`
     );
   }
 };
@@ -156,9 +163,28 @@ const getUniquePersons = asyncHandler(async (req, res) => {
   }
 });
 
+const uploadChatImage = asyncHandler(async (req, res) => {
+  const image = req.file.path;
+
+  if (!image) {
+    throw new ApiError(400, "Image not found");
+  }
+
+  const imageUrl = await uploadOnCloudinary(image, "rooms");
+
+  if (!imageUrl) {
+    throw new ApiError(400, "Error occured while uploading image");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, imageUrl.url, "Suscessfully uploaded image"));
+});
+
 export {
   registerMessage,
   getChatMessages,
   saveMessageFromSockets,
   getUniquePersons,
+  uploadChatImage,
 };

@@ -7,6 +7,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
 import io from "socket.io-client";
 import { useChatSocket } from "../../../socketContext/socket";
+import { MdImage } from "react-icons/md";
 
 const TenantMessages = () => {
   const socket = useMemo(
@@ -19,7 +20,9 @@ const TenantMessages = () => {
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [loadingUsers, setLoadingUsers] = useState(false);
   const [newMessage, setNewMessage] = useState("");
+  const [image, setImage] = useState(null);
   const messagesEndRef = useRef(null);
+  const [sending, setSending] = useState(false);
 
   const { messages, sendMessage, joinRoom, getAllMessages, uniquePersons } =
     useChatSocket();
@@ -39,13 +42,55 @@ const TenantMessages = () => {
   }, [clickedPerson?.id]);
 
   // Handle sending a message
-  const handleSend = async () => {
-    if (newMessage.trim()) {
-      sendMessage(newMessage, userData._id, clickedPerson.id);
+
+  // Handle sending a message
+  const handleSend = async (e) => {
+    e.preventDefault();
+
+    if (sending) {
+      return;
+    }
+
+    setSending(true)
+
+    let imageUrl = "";
+
+    const formData = new FormData();
+    try {
+      if (image) {
+        formData.append("image", image);
+        const response = await axios.post(
+          SummaryApi.uploadChatImage.url,
+          formData,
+          {
+            withCredentials: true,
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+
+        if (response.status != 200) {
+          console.log("Error occured while uploading image");
+        }
+        imageUrl = response.data.data;
+        setImage(null)
+      }
+
+      setNewMessage((msg) => msg.trim());
+      sendMessage(newMessage, imageUrl, userData._id, clickedPerson.id);
       setNewMessage("");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setSending(false);
     }
   };
 
+  const handleImageUpload = (e) => {
+    const image = e.target.files[0];
+    if (image) {
+      setImage(image);
+    }
+  };
 
   return (
     <div className=" bg-gray-100 h-full max-h-[100vh]">
@@ -78,7 +123,8 @@ const TenantMessages = () => {
                   <h3 className="font-medium">{person.userName}</h3>
                   <p className="text-sm truncate">
                     {messages[messages.length - 1]?.message ||
-                      person.latestMessage}
+                      person?.latestMessage ||
+                      "sent a photo"}
                   </p>
                 </div>
               </div>
@@ -109,14 +155,27 @@ const TenantMessages = () => {
                       : "justify-start"
                   }`}
                 >
-                  <div
-                    className={`px-4 py-2 rounded-lg max-w-xs text-sm shadow ${
-                      msg.sender === userData._id
-                        ? "bg-blue-500 text-white"
-                        : "bg-gray-200 text-gray-800"
-                    }`}
-                  >
-                    {msg.message}
+                  <div>
+                    {msg.image && (
+                      <div
+                        className={`px-4 py-2 rounded-lg max-w-xs text-sm shadow rounded-xl${
+                          msg.sender === userData._id
+                        }`}
+                      >
+                        <img src={msg.image} alt="" className="rounded-mdw-[25rem] max-h-[25rem] h-[15rem] object-cover min-h-[10rem" />
+                      </div>
+                    )}
+                    {msg.message && (
+                      <div
+                        className={`px-4 py-2 rounded-lg max-w-xs text-sm shadow ${
+                          msg.sender === userData._id
+                            ? "bg-blue-500 text-white "
+                            : "bg-gray-200 text-gray-800"
+                        }`}
+                      >
+                        {msg.message}
+                      </div>
+                    )}
                   </div>
                 </div>
               ))
@@ -128,22 +187,38 @@ const TenantMessages = () => {
 
           {/* Message Input */}
           {clickedPerson && (
-            <div className="flex border-t pt-2">
+            <form onSubmit={handleSend} className="flex border-t pt-2">
               <input
                 type="text"
                 className="flex-1 p-2 border rounded-lg focus:outline-none"
                 placeholder="Type a message..."
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && handleSend()}
+                // onKeyPress={(e) => e.key === "Enter" && handleSend()}
               />
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                id="imageUpload"
+                onChange={handleImageUpload}
+              />
+              <label
+                htmlFor="imageUpload"
+                className="ml-2 bg-gray-300 text-gray-600 p-3 rounded-lg cursor-pointer hover:bg-gray-400"
+              >
+                <MdImage />
+              </label>
               <button
-                className="ml-2 bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition"
-                onClick={sendMessage}
+                className={`ml-2 text-white p-3 rounded-lg hover:bg-blue-600 transition ${
+                  sending ? " bg-red-500" : " bg-blue-500"
+                }`}
+                type="submit"
+                disabled={sending}
               >
                 <IoSend />
               </button>
-            </div>
+            </form>
           )}
         </div>
       </div>

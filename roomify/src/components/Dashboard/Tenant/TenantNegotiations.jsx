@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import SummaryApi from "../../../api/api";
 import showToast from "../../ShowToast";
 import { RxCross2 } from "react-icons/rx";
+import { Link } from "react-router-dom";
 
 const TenantNegotiations = () => {
   const [Negotiations, setNegotiations] = useState([]);
@@ -74,7 +75,8 @@ const TenantNegotiations = () => {
                 </thead>
                 <tbody>
                   {Negotiations?.map((negotiation, index) =>
-                    !negotiation.negotiationStatus && !negotiation?.counterPrice ? (
+                    !negotiation.negotiationStatus &&
+                    !negotiation?.counterPrice ? (
                       <tr key={index} className="border-b text-center">
                         <td className="px-4 py-2">
                           {negotiation.client.name || "demo"}
@@ -135,9 +137,12 @@ const TenantNegotiations = () => {
                         <td className="px-4 py-2">{negotiation.room.price}</td>
                         <td className="px-4 py-2">{negotiation.price}</td>
                         <td className="px-4 py-2">
-                          <button className="bg-primary p-1 px-3 rounded-xl hover:text-white hover:bg-black">
+                          <Link
+                            to={`/payment/${negotiation?.room?._id}`}
+                            className="bg-primary p-1 px-3 rounded-xl hover:text-white hover:bg-black"
+                          >
                             Rent
-                          </button>
+                          </Link>
                         </td>
                         <td className="px-4 py-2">
                           <button
@@ -193,9 +198,12 @@ const TenantNegotiations = () => {
                           {negotiation.counterPrice}
                         </td>
                         <td className="px-4 py-2">
-                          <button className="bg-primary p-1 px-3 rounded-xl hover:text-white hover:bg-black">
+                          <Link
+                            to={`/payment/${negotiation?.room?._id}`}
+                            className="bg-primary p-1 px-3 rounded-xl hover:text-white hover:bg-black"
+                          >
                             Rent
-                          </button>
+                          </Link>
                         </td>
                         <td className="px-4 py-2">
                           <button

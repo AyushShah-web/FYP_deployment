@@ -10,12 +10,12 @@ const paymentSchema = new Schema(
       required: true,
     },
     amount: {
-      type: number,
+      type: Number,
       required: true,
     },
     dataFormVerification: {
       type: Object,
-    },
+    },    
     apiQueryFromUsers: {
       type: Object,
     },

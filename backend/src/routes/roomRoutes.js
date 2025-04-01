@@ -10,6 +10,7 @@ import {
   getRoomsBasedOnLocation,
   getRoomLocations,
   getRoomBasedOnCoordinates,
+  getRentedRoomsOfUser,
 } from "../controllers/roomControllers.js";
 import { verifyJwtToken } from "../middlewares/authMiddleware.js";
 import { upload } from "../middlewares/multerMiddlewares.js";
@@ -30,5 +31,6 @@ router.route("/getUniqueLocations").get(getRoomLocations);
 router.route("/getRoomsBasedOnTypes/:type").get(getRoomsBasedOnTypes);
 router.route("/getRoomsBasedOnLocation/:location").get(getRoomsBasedOnLocation);
 router.route("/getRoomBasedOnCoordinates").get(getRoomBasedOnCoordinates);
+router.route("/getRentedRoomsOfUsers").get(verifyJwtToken,getRentedRoomsOfUser)
 
 export default router;

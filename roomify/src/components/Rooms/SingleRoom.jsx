@@ -100,7 +100,7 @@ const SingleRoom = () => {
       <div className="bg-white text-black p-6 lg:p-14 rounded-lg shadow-lg">
         <button
           className="p-1 lg:px-3 rounded-xl text-lg text-bold bg-primary"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate('/category/rooms')}
         >
           Back
         </button>

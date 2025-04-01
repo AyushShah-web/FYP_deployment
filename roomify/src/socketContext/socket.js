@@ -113,8 +113,8 @@ export const useChatSocket = () => {
     }
   };
 
-  const sendMessage = (message, sender, receiver) => {
-    socket.emit("sendMessage", { message, sender, receiver });
+  const sendMessage = (message,imageUrl, sender, receiver) => {
+    socket.emit("sendMessage", { message,imageUrl,sender, receiver });
   };
 
   return { messages, sendMessage, joinRoom, getAllMessages, uniquePersons };

@@ -66,7 +66,7 @@ const TenantsList = () => {
                 <tr className="border-b">
                   <th className="px-4 py-2">SN. No</th>
                   <th className="px-4 py-2">Name</th>
-                  <th className="px-4 py-2">Features</th>
+                  {/* <th className="px-4 py-2">Features</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -78,7 +78,7 @@ const TenantsList = () => {
                       {landlord.name}
                     </td>
                    
-                    <td className="px-4 py-2 flex gap-4 text-xl">
+                    {/* <td className="px-4 py-2 flex gap-4 text-xl">
                       <button
                       // onClick={()=>deleteTenant(landlord._id)}
                       >
@@ -87,7 +87,7 @@ const TenantsList = () => {
                       <button onClick={() => deleteTenant(landlord._id)}>
                         <MdDelete className="text-red-500" />
                       </button>
-                    </td>
+                    </td> */}
                   </tr>
                 ))}
               </tbody>

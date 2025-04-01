@@ -9,6 +9,7 @@ import {
 } from "../utils/cloudinary.js";
 import { Negotiation } from "../models/negotiationModel.js";
 import { Experience } from "../models/experienceModel.js";
+import { RentedRoom } from "../models/rentedRoomSchema.js";
 
 // Registering room
 const registerRoom = asyncHandler(async (req, res) => {
@@ -283,6 +284,24 @@ const getRoomBasedOnCoordinates = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, rooms, "Suscessfully fetched rooms"));
 });
 
+const getRentedRoomsOfUser = asyncHandler(async (req, res) => {
+  // Get the rented rooms of the user
+
+  const id = req.user._id;
+
+  if (!id) {
+    throw new ApiError(400, "Id is required");
+  }
+
+  const rooms = await RentedRoom.find({ buyer: id }).populate("room");
+
+  console.log("Rooms", rooms);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, rooms, "Suscessfully fetched rooms data"));
+});
+
 export {
   registerRoom,
   getAllRooms,
@@ -294,4 +313,5 @@ export {
   getRoomsBasedOnLocation,
   getRoomLocations,
   getRoomBasedOnCoordinates,
+  getRentedRoomsOfUser,
 };

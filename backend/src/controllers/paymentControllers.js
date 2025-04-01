@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import { Negotiation } from "../models/negotiationModel.js";
-import { Payment } from "../models/paymentModel.js";
 import { Room } from "../models/roomModel.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -20,14 +19,14 @@ const getRoomPrice = asyncHandler(async (req, res) => {
   }).populate("room", "price");
 
   if(negotiation){
-
+ 
   if (negotiation?.counterPrice) {
     return res
       .status(200)
       .json(
         new ApiResponse(
           200,
-          counteredPriceOfRoom?.counterPrice,
+          negotiation?.counterPrice,
           "Suscessfully fetched counter price"
         )
       );
@@ -39,7 +38,7 @@ const getRoomPrice = asyncHandler(async (req, res) => {
       .json(
         new ApiResponse(
           200,
-          negotiaion?.price,
+          negotiation?.price,
           "Suscessfully fetched negotiated value"
         )
       );

@@ -5,7 +5,6 @@ import { User } from "./models/userModel.js";
 import { generateToken } from "./controllers/userControllers.js";
 const app = express();
 
-
 app.use(
   cors({
     origin: ["http://localhost:5173", "http://192.168.1.79:5173", "*"],
@@ -139,6 +138,7 @@ import experinceRouter from "./routes/experienceRoutes.js";
 import paymentRouter from "./routes/paymentRoutes.js";
 import messageRouter from "./routes/messageRoutes.js";
 import adminRouter from "./routes/adminRoutes.js";
+import khaltiRouter from "./routes/khaltiRoutes.js";
 
 // router declaration
 app.use("/api/users", userRouter);
@@ -149,5 +149,6 @@ app.use("/api/experience", experinceRouter);
 app.use("/api/payments", paymentRouter);
 app.use("/api/messages", messageRouter);
 app.use("/api/admin", adminRouter);
+app.use("/api/khalti", khaltiRouter);
 
 export { app };

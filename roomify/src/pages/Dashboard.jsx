@@ -18,6 +18,7 @@ import {
 } from "../components/index";
 import axios from "axios";
 import { ToastContainer } from "react-toastify";
+import MyRooms from "../components/Dashboard/Tenant/MyRooms";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -123,7 +124,7 @@ const Dashboard = () => {
             </>
           )}
 
-          {/* Tenant */}
+          {/* Tenant and Landlord */}
           {(userData.type === "landlord" || userData.type === "tenant") && (
             <>
               <NavLink
@@ -151,6 +152,22 @@ const Dashboard = () => {
                 Messages
               </NavLink>
             </>
+          )}
+
+          {/* Tenant  */}
+          {userData.type === "tenant" && (
+            <NavLink
+              to={"/dashboard/myRooms"}
+              className={({ isActive }) =>
+                `p-3 rounded-md text-center transition ${
+                  isActive
+                    ? "bg-blue-700 text-white"
+                    : "bg-[#0f5da7] text-white hover:bg-blue-700"
+                }`
+              }
+            >
+              Rented Rooms
+            </NavLink>
           )}
 
           {/* Admin */}
@@ -219,6 +236,7 @@ const Dashboard = () => {
           <Route path="/userNegotiations" element={<Negotiations />} />
           <Route path="/roomForm" element={<RoomForm />} />
           <Route path="/roomForm/:slug" element={<RoomForm />} />
+          <Route path="/myRooms" element={<MyRooms />} />
           {userData.type != "admin" && (
             <Route path="/messages" element={<Messages />} />
           )}

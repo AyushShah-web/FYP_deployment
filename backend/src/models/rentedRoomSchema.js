@@ -1,10 +1,10 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 
 const rentedRoomSchema = new Schema(
   {
-    item: {
+    room: {
       type: Schema.Types.ObjectId,
-      ref: "room",
+      ref: "Room",
     },
     totalPrice: {
       type: Number,
@@ -23,10 +23,20 @@ const rentedRoomSchema = new Schema(
       enum: ["pending", "complelted", "refunded"],
       default: "pending",
     },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref:"User",
+      required: true,
+    },
+    buyer: {
+      type: Schema.Types.ObjectId,
+      ref:"User",
+      requred: true,
+    },
   },
   {
     timestamps: true,
   }
 );
 
-export const RentedRoom = mongoose.model("RentedRoom",rentedRoomSchema)
+export const RentedRoom = mongoose.model("RentedRoom", rentedRoomSchema);

@@ -29,6 +29,7 @@ import Home from "./pages/Home.jsx";
 import AboutUs from "./pages/AboutUs.jsx";
 import RentRoom from "./components/Payments/RentRoom.jsx";
 import Profile from "./components/Dashboard/Profile.jsx";
+import MyRooms from "./components/Dashboard/Tenant/MyRooms.jsx";
 
 const router = createBrowserRouter([
   {
@@ -163,6 +164,14 @@ const router = createBrowserRouter([
         element:(
           <AuthLayout authentication={true}>
             <Messages/>
+          </AuthLayout>
+        )
+      },
+      {
+        path:"myRooms",
+        element:(
+          <AuthLayout authentication={true}>
+            <MyRooms/>
           </AuthLayout>
         )
       }

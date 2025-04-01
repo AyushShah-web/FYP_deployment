@@ -23,13 +23,14 @@ io.on("connection", (socket) => {
     socket.join(roomId);
   });
 
-  socket.on("sendMessage", async ({ message, sender, receiver }) => {
+  socket.on("sendMessage", async ({ message, imageUrl,sender, receiver }) => {
     console.log("Entered here");
 
     const messageDb = await saveMessageFromSockets({
       sender,
       receiver,
       message,
+      imageUrl
     });
     console.log("MessageDb", messageDb);
 

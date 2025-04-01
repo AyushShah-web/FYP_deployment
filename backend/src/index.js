@@ -16,9 +16,9 @@ connectDB()
       console.log(`App is listening on ${port}`);
     });
     server.on("error", (error) => {
-      console.log(`Express connection error ${port} `);
+      console.log(`Express connection error ${error} `);
     });
-  })
+  })  
   .catch((error) => {
     console.log("Mongo db connection failed", error);
   });

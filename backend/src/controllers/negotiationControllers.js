@@ -121,27 +121,18 @@ const acceptNegotiation = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { negotiationId } = req.params;
 
-  const negotiationDetails = await Negotiation.findOne({_id:negotiationId}).populate("client","email")
-
-  const negotiate = await Negotiation.updateOne(
-    { _id: negotiationId },
-    {
-      negotiationStatus: true,
-    }
-  )
-
-  // console.log(negotiate);
-  
+  const negotiate = await Negotiation.findByIdAndUpdate(negotiationId, {
+    negotiationStatus: true,
+  }).populate("client", "email");
 
   if (!negotiate) {
     throw new ApiError(400, "Invalid room Id");
-  } 
+  }
 
-  console.log(negotiationDetails.client.email);
-  
+  console.log("accept negotiate", negotiate);
 
   sendEmail({
-    email: negotiationDetails?.client?.email,
+    email: negotiate?.client?.email,
     subject: "Roomify ",
     message: `Your negotiation have been accepted`,
   });

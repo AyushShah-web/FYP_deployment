@@ -65,13 +65,10 @@ const LandlordsList = () => {
                     <td className="px-4 py-2 capitalize text-center">
                       {index + 1}
                     </td>
-                    <td className="px-4 py-2 flex gap-4 text-xl">
-                      <Link to={`/dashboard/roomForm/${landlord._id}`}>
-                        <FaEdit className="text-primary" />
+                    <td className="px-4 py-2 flex gap-4 border-2 p-1 w-fit cursor-pointer">
+                      <Link to={`/landlord/`}>
+                    See Rooms
                       </Link>
-                      <button onClick={() => deleteRoom(landlord._id)}>
-                        <MdDelete className="text-red-500" />
-                      </button>
                     </td>
                   </tr>
                 ))}
