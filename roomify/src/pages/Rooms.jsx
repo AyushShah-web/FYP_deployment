@@ -3,7 +3,6 @@ import { Link, useLocation } from "react-router-dom";
 import SummaryApi from "../api/api";
 import axios from "axios";
 import RoomCard from "../components/Rooms/RoomCard";
-import { ArrowRight } from "lucide-react";
 
 const Rooms = () => {
   const [locations, setLocations] = useState([]);

@@ -46,6 +46,20 @@ const SummaryApi = {
     url: `${backendDomain}/api/admin/getUserCounts`,
     method: "get",
   },
+  getRentedRooms: {
+    url: `${backendDomain}/api/admin/getRentedRooms`,
+    method: "get",
+  },
+  getRoomsOfCertainLandlord: {
+    url: `${backendDomain}/api/admin/getRoomsOfCertainLandlord`,
+    method: "get",
+  },
+
+  // Profile Api
+  uploadProfileImage: {
+    url: `${backendDomain}/api/users/uploadProfileImage`,
+    method: "post",
+  },
 
   // Otp Api
   generateOtp: {
@@ -99,6 +113,10 @@ const SummaryApi = {
   },
   getRentedRoomsOfUsers: {
     url: `${backendDomain}/api/rooms/getRentedRoomsOfUsers`,
+    method: "get",
+  },
+  getRentedRoomsOfLandlord: {
+    url: `${backendDomain}/api/rooms/getRentedRoomsOfLandlord`,
     method: "get",
   },
 

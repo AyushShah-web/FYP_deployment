@@ -5,7 +5,7 @@ import SummaryApi from "../../../api/api";
 import showToast from "../../ShowToast";
 import { useNavigate } from "react-router-dom";
 
-const MyRooms = () => {
+const MyRentedRooms = () => {
   const userData = useSelector((state) => state.user.userData);
   const [rooms, setRooms] = useState([]);
 
@@ -13,7 +13,7 @@ const MyRooms = () => {
 
   useEffect(() => {
     const func = async () => {
-      const response = await axios.get(SummaryApi.getRentedRoomsOfUsers.url, {
+      const response = await axios.get(SummaryApi.getRentedRoomsOfLandlord.url, {
         withCredentials: true,
       });
 
@@ -97,4 +97,4 @@ const MyRooms = () => {
   );
 };
 
-export default MyRooms;
+export default MyRentedRooms;

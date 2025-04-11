@@ -4,6 +4,8 @@ import {
   deleteUser,
   getAllLandlord,
   getAllTenant,
+  getRentedRooms,
+  getRoomsOfCertainLandlord,
   getUserCounts,
 } from "../controllers/adminControllers.js";
 
@@ -13,5 +15,9 @@ router.route("/deleteUser/:id").delete(verifyJwtToken, deleteUser);
 router.route("/getAllLandlords").get(verifyJwtToken, getAllLandlord);
 router.route("/getAllTenants").get(verifyJwtToken, getAllTenant);
 router.route("/getUserCounts").get(verifyJwtToken, getUserCounts);
+router.route("/getRentedRooms").get(verifyJwtToken, getRentedRooms);
+router
+  .route("/getRoomsOfCertainLandlord/:id")
+  .get(verifyJwtToken, getRoomsOfCertainLandlord);
 
 export default router;

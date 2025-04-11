@@ -27,6 +27,7 @@ export default function HomeProperties({ properties }) {
                 </span>
 
                 <div className="mt-6">
+                  <img src={property.image} alt="" />
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     {property.name}
                   </h3>

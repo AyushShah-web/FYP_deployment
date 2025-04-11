@@ -1,4 +1,5 @@
 import { Negotiation } from "../models/negotiationModel.js";
+import { RentedRoom } from "../models/rentedRoomSchema.js";
 import { Room } from "../models/roomModel.js";
 import { User } from "../models/userModel.js";
 import { ApiError } from "../utils/ApiError.js";
@@ -60,9 +61,47 @@ const getUserCounts = asyncHandler(async (req, res) => {
   const count = {
     tenants,
     landlords,
-    rooms
+    rooms,
   };
-  return res.status(200).json(new ApiResponse(200, count, "User data counted suscessfully"));
+  return res
+    .status(200)
+    .json(new ApiResponse(200, count, "User data counted suscessfully"));
 });
 
-export { getAllLandlord, getAllTenant, deleteUser, getUserCounts };
+const getRentedRooms = asyncHandler(async (req, res) => {
+  const rooms = await RentedRoom.find({}).populate("room");
+
+  if (!rooms) {
+    throw new ApiError(400, "NO such rooms found");
+  }
+  return res
+    .status(200)
+    .json(new ApiResponse(200, rooms, "Rented rooms fetched"));
+});
+
+const getRoomsOfCertainLandlord = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  if (!id) {
+    throw new ApiError(400, "Id is required");
+  }
+
+  const rooms = await Room.find({ owner: id });
+
+  if (!rooms) {
+    throw new ApiError(400, "No rooms found");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, rooms, "Rooms fetched successfully"));
+});
+
+export {
+  getAllLandlord,
+  getAllTenant,
+  deleteUser,
+  getUserCounts,
+  getRentedRooms,
+  getRoomsOfCertainLandlord,
+};

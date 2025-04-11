@@ -66,7 +66,7 @@ const LandlordsList = () => {
                       {index + 1}
                     </td>
                     <td className="px-4 py-2 flex gap-4 border-2 p-1 w-fit cursor-pointer">
-                      <Link to={`/landlord/`}>
+                      <Link to={`/dashboard/specificLandlordLists/${landlord._id}`}>
                     See Rooms
                       </Link>
                     </td>

@@ -18,7 +18,8 @@ import {
 } from "../components/index";
 import axios from "axios";
 import { ToastContainer } from "react-toastify";
-import MyRooms from "../components/Dashboard/Tenant/MyRooms";
+import RentedRooms from "../components/Dashboard/RentedRooms";
+import SpecificLandlordRooms from "../components/Dashboard/Admin/SpecificLandlordRooms";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -93,6 +94,36 @@ const Dashboard = () => {
           >
             Profile
           </NavLink>
+          {/* Admin */}
+          {userData.type === "admin" && (
+            <>
+              {" "}
+              <NavLink
+                to={"/dashboard/landlordsList"}
+                className={({ isActive }) =>
+                  `p-3 rounded-md text-center transition ${
+                    isActive
+                      ? "bg-blue-700 text-white"
+                      : "bg-[#0f5da7] text-white hover:bg-blue-700"
+                  }`
+                }
+              >
+                Landlords
+              </NavLink>
+              <NavLink
+                to={"/dashboard/tenantsList"}
+                className={({ isActive }) =>
+                  `p-3 rounded-md text-center transition ${
+                    isActive
+                      ? "bg-blue-700 text-white"
+                      : "bg-[#0f5da7] text-white hover:bg-blue-700"
+                  }`
+                }
+              >
+                Tenants
+              </NavLink>
+            </>
+          )}
 
           {/* Landlord */}
           {userData.type === "landlord" && (
@@ -155,51 +186,19 @@ const Dashboard = () => {
           )}
 
           {/* Tenant  */}
-          {userData.type === "tenant" && (
-            <NavLink
-              to={"/dashboard/myRooms"}
-              className={({ isActive }) =>
-                `p-3 rounded-md text-center transition ${
-                  isActive
-                    ? "bg-blue-700 text-white"
-                    : "bg-[#0f5da7] text-white hover:bg-blue-700"
-                }`
-              }
-            >
-              Rented Rooms
-            </NavLink>
-          )}
 
-          {/* Admin */}
-          {userData.type === "admin" && (
-            <>
-              {" "}
-              <NavLink
-                to={"/dashboard/landlordsList"}
-                className={({ isActive }) =>
-                  `p-3 rounded-md text-center transition ${
-                    isActive
-                      ? "bg-blue-700 text-white"
-                      : "bg-[#0f5da7] text-white hover:bg-blue-700"
-                  }`
-                }
-              >
-                Landlords
-              </NavLink>
-              <NavLink
-                to={"/dashboard/tenantsList"}
-                className={({ isActive }) =>
-                  `p-3 rounded-md text-center transition ${
-                    isActive
-                      ? "bg-blue-700 text-white"
-                      : "bg-[#0f5da7] text-white hover:bg-blue-700"
-                  }`
-                }
-              >
-                Tenants
-              </NavLink>
-            </>
-          )}
+          <NavLink
+            to={"/dashboard/myRooms"}
+            className={({ isActive }) =>
+              `p-3 rounded-md text-center transition ${
+                isActive
+                  ? "bg-blue-700 text-white"
+                  : "bg-[#0f5da7] text-white hover:bg-blue-700"
+              }`
+            }
+          >
+            Rented Rooms
+          </NavLink>
         </div>
         <div className="absolute self-center bottom-3 w-[90%] flex flex-col">
           <Link
@@ -236,7 +235,7 @@ const Dashboard = () => {
           <Route path="/userNegotiations" element={<Negotiations />} />
           <Route path="/roomForm" element={<RoomForm />} />
           <Route path="/roomForm/:slug" element={<RoomForm />} />
-          <Route path="/myRooms" element={<MyRooms />} />
+          <Route path="/myRooms" element={<RentedRooms />} />
           {userData.type != "admin" && (
             <Route path="/messages" element={<Messages />} />
           )}
@@ -245,6 +244,10 @@ const Dashboard = () => {
             <>
               <Route path="/tenantsList" element={<TenantsList />} />
               <Route path="/landlordsList" element={<LandlordsList />} />
+              <Route
+                path="/specificLandlordLists/:id"
+                element={<SpecificLandlordRooms />}
+              />
             </>
           )}
         </Routes>

@@ -35,6 +35,10 @@ const userSchema = new Schema(
     token: {
       type: String,
     },
+    image: {
+      type: String,
+      required: false,
+    },
   },
   { timestamps: true }
 );

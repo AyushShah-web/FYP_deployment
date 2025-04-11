@@ -302,6 +302,21 @@ const getRentedRoomsOfUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, rooms, "Suscessfully fetched rooms data"));
 });
 
+const getRentedRoomsOfLandlord = asyncHandler(async(req,res)=>{
+  const id =req.user._id;
+
+  if(!id){
+    throw new ApiError(400,"ID is required");
+  }
+
+  const rooms = await RentedRoom.find({owner:id}).populate("room")
+
+  return res
+  .status(200)
+  .json(new ApiResponse(200,rooms,"Rooms fetched suscessfully"));
+
+})
+
 export {
   registerRoom,
   getAllRooms,
@@ -314,4 +329,5 @@ export {
   getRoomLocations,
   getRoomBasedOnCoordinates,
   getRentedRoomsOfUser,
+  getRentedRoomsOfLandlord
 };

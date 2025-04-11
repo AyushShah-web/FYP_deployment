@@ -26,7 +26,7 @@ const LandlordProfile = () => {
 
     try {
       const response = await axios.post(
-        ⁠ ${SummaryApi.uploadProfileImage.url}/${userData._id} ⁠,
+        `${SummaryApi.uploadProfileImage.url}/${userData._id}`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },

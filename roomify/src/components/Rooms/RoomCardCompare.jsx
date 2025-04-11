@@ -2,7 +2,7 @@ import { IndianRupee } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
 
-const RoomCard = ({ property, index }) => {
+const RoomCardCompare = ({ property, index,setSelectedRoomId }) => {
   return property.status ? null : (
     <div>
       {" "}
@@ -33,12 +33,12 @@ const RoomCard = ({ property, index }) => {
               >
                 View Details
               </Link>
-              <Link
-                to={`/compareRoom/${property._id}`}
+              <button
+                onClick={()=>setSelectedRoomId(property._id)}
                 className=" bg-primary hover:bg-primary/90  text-white py-2 px-1 lg:px-2 rounded-xl"
               >
                 Compare It
-              </Link>
+              </button>
             </div>
           </div>
         </div>
@@ -47,4 +47,4 @@ const RoomCard = ({ property, index }) => {
   );
 };
 
-export default RoomCard;
+export default RoomCardCompare;

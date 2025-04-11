@@ -3,6 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { User } from "../models/userModel.js";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const generateToken = async (userId) => {
   try {
@@ -136,4 +137,39 @@ const checkUserInDb = asyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, user, "User data fetched"));
 });
 
-export { registerUser, loginUser, getUserData, generateToken, logoutUser ,checkUserInDb};
+const uploadProfileImage = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  let imageLocalPath = req.file?.path;
+
+  
+  
+  const image = await uploadOnCloudinary(imageLocalPath, "rooms");
+  console.log(image);
+  if (!image) {
+    console.log(400, "Error occured while uploading image");
+    throw new ApiError(400, "Something went wrong while uploading image");
+  }
+
+  const user = await User.findByIdAndUpdate(id,{
+    image: image.url,
+  });
+
+  if (!user) {
+    await deleteFromCloudinary(image.url);
+    throw new ApiError(400, "Error occured while uploading in database");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, user, "Image uploaded suscessfllly"));
+});
+
+export {
+  registerUser,
+  loginUser,
+  getUserData,
+  generateToken,
+  logoutUser,
+  checkUserInDb,
+  uploadProfileImage
+};

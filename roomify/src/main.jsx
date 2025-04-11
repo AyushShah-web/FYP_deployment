@@ -30,6 +30,8 @@ import AboutUs from "./pages/AboutUs.jsx";
 import RentRoom from "./components/Payments/RentRoom.jsx";
 import Profile from "./components/Dashboard/Profile.jsx";
 import MyRooms from "./components/Dashboard/Tenant/MyRooms.jsx";
+import CompareRooms from "./components/Rooms/CompareRooms.jsx";
+import SpecificLandlordRooms from "./components/Dashboard/Admin/SpecificLandlordRooms.jsx";
 
 const router = createBrowserRouter([
   {
@@ -88,6 +90,10 @@ const router = createBrowserRouter([
       {
         path: "/payment/:slug",
         element: <RentRoom />,
+      },
+      {
+        path: "/compareRoom/:slug",
+        element: <CompareRooms />,
       },
     ],
   },
@@ -160,21 +166,29 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path:"messages",
-        element:(
+        path: "messages",
+        element: (
           <AuthLayout authentication={true}>
-            <Messages/>
+            <Messages />
           </AuthLayout>
-        )
+        ),
       },
       {
-        path:"myRooms",
-        element:(
+        path: "myRooms",
+        element: (
           <AuthLayout authentication={true}>
-            <MyRooms/>
+            <MyRooms />
           </AuthLayout>
-        )
-      }
+        ),
+      },
+      {
+        path: "specificTenantRoom",
+        element: (
+          <AuthLayout authentication={true}>
+            <SpecificLandlordRooms />
+          </AuthLayout>
+        ),
+      },
     ],
   },
 ]);
