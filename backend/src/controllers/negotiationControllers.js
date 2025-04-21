@@ -69,7 +69,7 @@ const deleteNegotiation = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(400, negotiation, "Negotiation deleted suscessfully");
+    .json(new ApiResponse(200, negotiation, "Negotiation deleted suscessfully"));
 });
 
 const getUsersNegotiations = asyncHandler(async (req, res) => {
@@ -118,6 +118,7 @@ const getRequestedNegotiations = asyncHandler(async (req, res) => {
 });
 const acceptNegotiation = asyncHandler(async (req, res) => {
   // Negotiate the room
+  console.log(1)
   const { _id } = req.user;
   const { negotiationId } = req.params;
 

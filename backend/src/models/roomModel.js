@@ -26,11 +26,11 @@ const roomSchema = new Schema(
       type: {
         type: String,
         enum: ["Point"],
-        required: true, // Ensure it's always provided
+        required: false, // Ensure it's always provided
       },
       coordinates: {
         type: [Number], // [longitude, latitude]
-        required: true,
+        required: false,
       },
     },
 

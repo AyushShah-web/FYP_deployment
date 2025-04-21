@@ -53,7 +53,7 @@ const Rooms = () => {
 
             if (response.data.data.length < 1) return;
 
-            setFilter(`Nearby (${lat.toFixed(2)}, ${lon.toFixed(2)})`);
+            setFilter(`Nearby Itahari`);
             setFilteredRooms(response.data.data);
           } catch (error) {
             console.log("API Error:", error);

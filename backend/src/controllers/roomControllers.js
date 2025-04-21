@@ -15,11 +15,11 @@ import { RentedRoom } from "../models/rentedRoomSchema.js";
 const registerRoom = asyncHandler(async (req, res) => {
   // Get the room type, location, and price of the room
   const { name, type, location, price, address } = req.body;
+  console.log(type,location,price,name);
   if (!(type && location && price && name)) {
     throw new ApiError(400, "All the fields are required");
   }
 
-  console.log(address);
   console.log("type of address", typeof address);
 
   const parsedAddress = JSON.parse(address);

@@ -203,16 +203,16 @@ const CompareRooms = () => {
                 <td className="p-4 font-medium">Availability</td>
                 <td className="p-4">
                   {mainRoom.status ? (
-                    <span className="text-green-600 font-semibold">Available</span>
-                  ) : (
                     <span className="text-red-600 font-semibold">Not Available</span>
+                  ) : (
+                    <span className="text-green-600 font-semibold"> Available</span>
                   )}
                 </td>
                 <td className="p-4">
-                  {selectedRoom.isAvailable ? (
-                    <span className="text-green-600 font-semibold">Available</span>
-                  ) : (
+                  {selectedRoom.status ? (
                     <span className="text-red-600 font-semibold">Not Available</span>
+                  ) : (
+                    <span className="text-green-600 font-semibold"> Available</span>
                   )}
                 </td>
               </tr>

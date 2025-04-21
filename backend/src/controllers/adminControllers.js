@@ -8,6 +8,11 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 
 const getAllLandlord = asyncHandler(async (req, res) => {
   // Get all the landlords
+const type = req.user.type;
+
+  if (type!="admin") {
+    throw new ApiError(400, "Unauthorized");
+  }
   const landlords = await User.find({ type: "landlord" }).select(
     "-password -token"
   );
@@ -22,6 +27,11 @@ const getAllLandlord = asyncHandler(async (req, res) => {
 
 const getAllTenant = asyncHandler(async (req, res) => {
   // Get all tenant
+  const type = req.user.type;
+
+  if (type!="admin") {
+    throw new ApiError(400, "Unauthorized");
+  }
   const tenants = await User.find({ type: "tenant" });
 
   if (!tenants) {
@@ -34,6 +44,11 @@ const getAllTenant = asyncHandler(async (req, res) => {
 
 const deleteUser = asyncHandler(async (req, res) => {
   // Delete a particular user
+  const type = req.user.type;
+
+  if (type!="admin") {
+    throw new ApiError(400, "Unauthorized");
+  }
   const { id } = req.params;
 
   if (!id) {
@@ -52,6 +67,11 @@ const deleteUser = asyncHandler(async (req, res) => {
 
 const getUserCounts = asyncHandler(async (req, res) => {
   // Get the total count of the users
+  const type = req.user.type;
+
+  if (type!="admin") {
+    throw new ApiError(400, "Unauthorized");
+  }
   const tenants = await User.find({ type: "tenant" }).countDocuments();
 
   const landlords = await User.find({ type: "landlord" }).countDocuments();
@@ -69,6 +89,11 @@ const getUserCounts = asyncHandler(async (req, res) => {
 });
 
 const getRentedRooms = asyncHandler(async (req, res) => {
+  const type = req.user.type;
+
+  if (type!="admin") {
+    throw new ApiError(400, "Unauthorized");
+  }
   const rooms = await RentedRoom.find({}).populate("room");
 
   if (!rooms) {
@@ -80,6 +105,11 @@ const getRentedRooms = asyncHandler(async (req, res) => {
 });
 
 const getRoomsOfCertainLandlord = asyncHandler(async (req, res) => {
+  const type = req.user.type;
+
+  if (type!="admin") {
+    throw new ApiError(400, "Unauthorized");
+  }
   const { id } = req.params;
 
   if (!id) {
