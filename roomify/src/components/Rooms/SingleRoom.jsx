@@ -6,7 +6,8 @@ import { ToastContainer } from "react-toastify";
 import showToast from "../ShowToast";
 import SummaryApi from "../../api/api";
 import ChatPopup from "../Chat/ChatPopup";
-import LeafletMap from "../LeafletMap"
+import LeafletMap from "../LeafletMap";
+import { FaArrowLeft, FaMoneyBillWave, FaStar, FaBalanceScale } from "react-icons/fa";
 
 const SingleRoom = () => {
   const userData = useSelector((state) => state.user.userData);
@@ -19,8 +20,6 @@ const SingleRoom = () => {
     async function getRoomData() {
       try {
         let room = await axios.get(`${SummaryApi.getRoomFromId.url}/${slug}`);
-        console.log(room);
-        
         setRoomData(room.data.data);
       } catch (error) {
         console.error("Room not found", error);
@@ -36,16 +35,6 @@ const SingleRoom = () => {
       showToast("error", "Cannot negotiate your own room");
       return;
     }
-    console.log(typeof roomData.price);
-    console.log(typeof negotiationValue);
-
-    console.log("room data limit", typeof (roomData.price * 0.8));
-    console.log("negotiationvalue", typeof negotiationValue);
-    console.log("room price", typeof roomData.price);
-    console.log(negotiationValue <= 0 ? true : false);
-
-    console.log(negotiationValue >= roomData.price ? true : false);
-    console.log(negotiationValue < roomData.price * 0.8 ? true : false);
 
     if (
       Number(negotiationValue) <= 0 ||
@@ -68,9 +57,7 @@ const SingleRoom = () => {
           room: roomData._id,
           owner: roomData.owner,
         },
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
       showToast("success", "Room negotiated successfully");
     } catch (error) {
@@ -78,118 +65,121 @@ const SingleRoom = () => {
     }
   };
 
-  const handleRating = async () => {
+  const handleRating = () => {
     if (!userData || userData.type !== "tenant") {
       showToast("error", "Only tenants can give ratings");
       return;
     }
-
     navigate("/experienceForm", {
       state: { id: roomData._id, name: roomData.name },
     });
   };
 
   if (!roomData) {
-    return (
-      <h1 className="text-center text-white text-2xl mt-12">Room not found</h1>
-    );
+    return <h1 className="text-center text-white text-2xl mt-12">Room not found</h1>;
   }
 
   return (
     <section className="container mx-auto px-4 py-12 flex flex-col justify-center items-center">
-      <div className="bg-white text-black p-6 lg:p-14 rounded-lg shadow-lg">
+      <div className="bg-white text-black p-6 md:p-10 rounded-2xl shadow-2xl w-full max-w-4xl relative">
         <button
-          className="p-1 lg:px-3 rounded-xl text-lg text-bold bg-primary"
-          onClick={() => navigate('/category/rooms')}
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-white font-semibold bg-blue-600 hover:bg-blue-700 mb-4"
+          onClick={() => navigate("/category/rooms")}
         >
-          Back
+          <FaArrowLeft /> Back
         </button>
-        <h1 className="text-3xl font-bold mb-4 capitalize">{roomData.name}</h1>
-        <img
-          className="w-full md:w-[400px] h-[250px] object-cover rounded-lg shadow-xl mb-4"
-          src={roomData.image}
-          alt={roomData.name}
-        />
-        <p className="text-lg mb-2 capitalize">
-          <strong>Location:</strong> {roomData.location}
-        </p>
-        <p className="text-lg mb-2 capitalize">
-          <strong>Type:</strong> {roomData.type}
-        </p>
-        <p className="text-lg mb-2 capitalize">
-          <strong>Owner:</strong> {roomData.owner?.name}
-        </p>
-        <p className="text-lg mb-4 capitalize">
-          <strong>Price:</strong> Rs {roomData.price}/month
-        </p>
-        <p className="text-sm text-gray-400">
-          Posted on: {new Date(roomData.createdAt).toLocaleDateString("en-CA")}
-        </p>
+
+        <h1 className="text-4xl font-extrabold mb-6 text-center capitalize text-primary">
+          {roomData.name}
+        </h1>
+
+        <div className="grid md:grid-cols-2 gap-6 items-start">
+          <img
+            className="w-full h-[300px] object-cover rounded-xl shadow-lg"
+            src={roomData.image}
+            alt={roomData.name}
+          />
+
+          <div className="space-y-4 text-lg">
+            <p><strong>📍 Location:</strong> {roomData.location}</p>
+            <p><strong>🏷️ Type:</strong> {roomData.type}</p>
+            <p><strong>👤 Owner:</strong> {roomData.owner?.name}</p>
+            <p><strong>💰 Price:</strong> Rs {roomData.price}/month</p>
+            <p className="text-sm text-gray-500">Posted on: {new Date(roomData.createdAt).toLocaleDateString("en-CA")}</p>
+          </div>
+        </div>
 
         {userData?.type === "tenant" ? (
-          <>
-            <form
-              onSubmit={handleNegotiation}
-              className="mt-6 flex flex-col md:flex-row gap-4"
-            >
+          <div className="mt-8 space-y-6">
+            <form onSubmit={handleNegotiation} className="flex flex-col md:flex-row gap-4">
               <input
                 type="number"
                 placeholder="Enter negotiation price"
-                className="flex-1 p-2 border border-gray-700 bg-gray-800 text-white rounded-md outline-none"
+                className="flex-1 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400"
                 onChange={(e) => setNegotiationValue(e.target.value)}
               />
               <button
                 type="submit"
-                className={`px-4 py-2 text-white font-semibold rounded-md transition-all ${
+                className={`flex items-center gap-2 px-5 py-3 rounded-md text-white font-semibold transition-all ${
                   negotiationValue > 0
-                    ? "bg-primary hover:bg-primary/90"
-                    : "bg-gray-700 cursor-not-allowed"
+                    ? "bg-yellow-500 hover:bg-yellow-600"
+                    : "bg-gray-400 cursor-not-allowed"
                 }`}
                 disabled={negotiationValue <= 0}
               >
-                Negotiate
+                <FaBalanceScale /> Negotiate
               </button>
             </form>
-            <div className="flex flex-col items-center gap-4 mt-4">
+
+            <div className="grid md:grid-cols-2 gap-4">
               <Link
                 to={`/payment/${roomData._id}`}
-                className="px-6 py-2 w-full min-w-[10rem] bg-primary hover:bg-primary/90 text-white font-semibold rounded-md"
+                className="flex items-center justify-center gap-2 px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-center"
               >
-                Rent It
+                <FaMoneyBillWave /> Rent It
               </Link>
-              <div className="flex justify-center gap-3">
-                <button
-                  onClick={handleRating}
-                  className="px-6 py-2 w-full bg-green-500 min-w-[10rem] hover:bg-green-600 text-white font-semibold rounded-md"
-                >
-                  Give Rating
-                </button>
-                <Link
-                  to={`/experience/${roomData._id}`}
-                  onClick={handleRating}
-                  className="px-6 py-2  bg-green-500 min-w-[10rem] hover:bg-green-600 text-white font-semibold rounded-md"
-                >
-                  See Rating
-                </Link>
-              </div>
-              <div className="map"></div>
+
+              <button
+                onClick={handleRating}
+                className="flex items-center justify-center gap-2 px-5 py-3 bg-green-500 hover:bg-green-600 text-white rounded-md"
+              >
+                <FaStar /> Give Rating
+              </button>
+
+              <Link
+                to={`/experience/${roomData._id}`}
+                className="flex items-center justify-center gap-2 px-5 py-3 bg-green-500 hover:bg-green-600 text-white rounded-md"
+              >
+                <FaStar /> See Rating
+              </Link>
+
+              <Link
+                to={`/compareRoom/${roomData._id}`}
+                className="flex items-center justify-center gap-2 px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md"
+              >
+                🔍 Compare It
+              </Link>
             </div>
-          </>
+          </div>
         ) : (
-          <div>
-            <p className="text-xl py-2">
-              <Link to={"/login"} className="font-bold text-blue-500">
-                Login as tenant
-              </Link>{" "}
-              to rent the rooms.{" "}
-            </p>
+          <p className="text-center text-lg mt-6">
+            <Link to="/login" className="font-bold text-blue-600 hover:underline">
+              Login as tenant
+            </Link>{" "}
+            to rent and negotiate rooms.
+          </p>
+        )}
+
+        {roomData?.address?.coordinates && (
+          <div className="mt-8 border rounded-xl overflow-hidden">
+            <LeafletMap coordinates={roomData.address.coordinates} />
           </div>
         )}
-      {roomData?.address?.coordinates && (
-        <LeafletMap coordinates={roomData?.address?.coordinates} />
-      )}
       </div>
-      <ChatPopup owner={roomData.owner} />
+
+      <div className="fixed bottom-4 right-4 z-50">
+        <ChatPopup owner={roomData.owner} />
+      </div>
     </section>
   );
 };

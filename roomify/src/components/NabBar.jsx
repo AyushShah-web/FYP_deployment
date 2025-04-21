@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import logo from "../images/Roomify.png";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { CgProfile } from "react-icons/cg";
 import { FiMenu, FiX } from "react-icons/fi"; // Icons for menu toggle
 import SummaryApi from "../api/api";
 import { useSelector, useDispatch } from "react-redux";
 import { userUnAuthorized } from "../store/userSlice";
+import axios from "axios";
 
-const NabBar = () => {
+const NavBar = () => {
   const userData = useSelector((state) => state.user.userData);
   const dispatch = useDispatch();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Toggle Menu
+  // Toggle Menu for mobile
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
@@ -117,11 +117,18 @@ const NabBar = () => {
             Rooms
           </Link>
           <Link
-            to="/aboutus"
+            to="/experiences"
             onClick={toggleMenu}
             className="hover:text-primary/80 transition-colors"
           >
             Experiences
+          </Link>
+          <Link
+            to="/aboutUs"
+            onClick={toggleMenu}
+            className="hover:text-primary/80 transition-colors"
+          >
+            About Us
           </Link>
           {Object.keys(userData).length > 0 ? (
             <Link
@@ -129,7 +136,15 @@ const NabBar = () => {
               onClick={toggleMenu}
               className="flex items-center gap-2 hover:text-primary/80 transition-colors"
             >
-              <CgProfile size={22} />
+              {userData.image ? (
+                <img
+                  src={userData.image}
+                  alt="User Profile"
+                  className="w-8 h-8 rounded-full object-cover"
+                />
+              ) : (
+                <CgProfile size={22} />
+              )}
               <h6>{userData.name}</h6>
             </Link>
           ) : (
@@ -150,10 +165,28 @@ const NabBar = () => {
               </Link>
             </>
           )}
+          : (
+          <>
+            <Link
+              to="/signup"
+              onClick={toggleMenu}
+              className="hover:text-primary/80 transition-colors"
+            >
+              Register
+            </Link>
+            <Link
+              to="/login"
+              onClick={toggleMenu}
+              className="hover:text-primary/80 transition-colors"
+            >
+              Login
+            </Link>
+          </>
+          )}
         </ul>
       )}
     </nav>
   );
 };
 
-export default NabBar;
+export default NavBar;

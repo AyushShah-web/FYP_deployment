@@ -26,19 +26,19 @@ const RoomCard = ({ property, index }) => {
                 <span>Nrs.{property.price}/month</span>
               </div>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-center">
               <Link
                 to={`/room/${property._id}`}
-                className=" bg-primary hover:bg-primary/90  text-white py-2 px-1 lg:px-2 rounded-xl text-center lg:min-w-[10rem]"
+                className=" bg-primary hover:bg-primary/90   text-white py-2 px-1 lg:px-2 rounded-xl text-center lg:min-w-[10rem]"
               >
                 View Details
               </Link>
-              <Link
+              {/* <Link
                 to={`/compareRoom/${property._id}`}
                 className=" bg-primary hover:bg-primary/90  text-white py-2 px-1 lg:px-2 rounded-xl"
               >
                 Compare It
-              </Link>
+              </Link> */}
             </div>
           </div>
         </div>

@@ -29,6 +29,12 @@ const SummaryApi = {
     method: "get",
   },
 
+  // User Api
+  updatePhoneNoAndAddress: {
+    url: `${backendDomain}/api/users/updateUserDetails`,
+    method: "post",
+  },
+
   // Admin Api
   getAllLandlords: {
     url: `${backendDomain}/api/admin/getAllLandlords`,

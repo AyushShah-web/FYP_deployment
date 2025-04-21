@@ -6,6 +6,7 @@ import {
   logoutUser,
   checkUserInDb,
   uploadProfileImage,
+  updatePhoneNoAndAddress,
 } from "../controllers/userControllers.js";
 import { verifyJwtToken } from "../middlewares/authMiddleware.js";
 import { upload } from "../middlewares/multerMiddlewares.js";
@@ -21,5 +22,8 @@ router.route("/checkUserInDb/:userEmail").get(checkUserInDb);
 router
   .route("/uploadProfileImage/:id")
   .post(verifyJwtToken, upload.single("image"), uploadProfileImage);
+router
+  .route("/updateUserDetails")
+  .post(verifyJwtToken, updatePhoneNoAndAddress);
 
 export default router;

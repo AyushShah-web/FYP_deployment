@@ -141,8 +141,6 @@ const uploadProfileImage = asyncHandler(async (req, res) => {
   const { id } = req.params;
   let imageLocalPath = req.file?.path;
 
-  
-  
   const image = await uploadOnCloudinary(imageLocalPath, "rooms");
   console.log(image);
   if (!image) {
@@ -150,7 +148,7 @@ const uploadProfileImage = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Something went wrong while uploading image");
   }
 
-  const user = await User.findByIdAndUpdate(id,{
+  const user = await User.findByIdAndUpdate(id, {
     image: image.url,
   });
 
@@ -164,6 +162,25 @@ const uploadProfileImage = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "Image uploaded suscessfllly"));
 });
 
+const updatePhoneNoAndAddress = asyncHandler(async (req, res) => {
+  console.log("Entered here");
+  
+  const { address, phoneNo } = req.body;
+  if (!(address && phoneNo)) {
+    throw new ApiError(400, "All the fields are required");
+  }
+  const user = await User.findByIdAndUpdate(req.user._id, {
+    phoneNo,
+    address,
+  });
+  if (!user) {
+    throw new ApiError(400, "user not found");
+  }
+  return res
+    .status(200)
+    .json(new ApiResponse(200, user, "User updated successfully"));
+});
+
 export {
   registerUser,
   loginUser,
@@ -171,5 +188,6 @@ export {
   generateToken,
   logoutUser,
   checkUserInDb,
-  uploadProfileImage
+  uploadProfileImage,
+  updatePhoneNoAndAddress,
 };
