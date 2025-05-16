@@ -7,7 +7,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://192.168.1.79:5173", "*"],
+    origin: [process.env.FRONTEND_URL, "http://192.168.1.79:5173", "*"],
     credentials: true,
   })
 );
@@ -99,7 +99,7 @@ app.get(
 
     console.log(token);
 
-    res.cookie("token", token, options).redirect("http://localhost:5173");
+    res.cookie("token", token, options).redirect(process.env.FRONTEND_URL);
   }
 );
 
@@ -126,7 +126,7 @@ app.get("/logout", (req, res, next) => {
     if (err) {
       return next(err);
     }
-    res.redirect("http://localhost:5173/");
+    res.redirect(process.env.FRONTEND_URL);
   });
 });
 
