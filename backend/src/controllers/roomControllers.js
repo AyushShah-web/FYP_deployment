@@ -95,7 +95,7 @@ const getUserRooms = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, rooms, "Suscessfully fetched all rooms"));
 });
-
+// Room comparison
 const getRoomsFromId = asyncHandler(async (req, res) => {
   console.log("Entered here");
 

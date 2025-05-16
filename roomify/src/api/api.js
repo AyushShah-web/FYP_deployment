@@ -110,7 +110,7 @@ const SummaryApi = {
     method: "get",
   },
   getRoomBasedOnLocation: {
-    url: `${backendDomain}/api/rooms/getRoomsBasedOnLocation`,
+    url: `${backendDomain}cd`,
     method: "get",
   },
   getRoomsBasedOnCoordinates: {

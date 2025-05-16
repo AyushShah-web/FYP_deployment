@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import logo from "../images/Roomify.png";
 import { Link } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
-import { FiMenu, FiX } from "react-icons/fi"; // Icons for menu toggle
+import { FiMenu, FiX } from "react-icons/fi";
 import SummaryApi from "../api/api";
 import { useSelector, useDispatch } from "react-redux";
 import { userUnAuthorized } from "../store/userSlice";
@@ -13,12 +13,10 @@ const NavBar = () => {
   const dispatch = useDispatch();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Toggle Menu for mobile
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
-  // Logout
   const logout = async () => {
     dispatch(userUnAuthorized());
     try {
@@ -31,7 +29,6 @@ const NavBar = () => {
   return (
     <nav className="bg-white border-b-2 shadow-md text-primary">
       <div className="container mx-auto px-6 md:px-10 flex justify-between items-center py-4">
-        {/* Logo */}
         <div className="flex items-center overflow-hidden">
           <Link to={"/"}>
             <img
@@ -41,6 +38,7 @@ const NavBar = () => {
             />
           </Link>
         </div>
+
         {/* Desktop Menu */}
         <ul className="hidden lg:flex space-x-8 font-medium">
           <Link to="/" className="hover:text-primary/80 transition-colors">
@@ -164,24 +162,6 @@ const NavBar = () => {
                 Login
               </Link>
             </>
-          )}
-          : (
-          <>
-            <Link
-              to="/signup"
-              onClick={toggleMenu}
-              className="hover:text-primary/80 transition-colors"
-            >
-              Register
-            </Link>
-            <Link
-              to="/login"
-              onClick={toggleMenu}
-              className="hover:text-primary/80 transition-colors"
-            >
-              Login
-            </Link>
-          </>
           )}
         </ul>
       )}
